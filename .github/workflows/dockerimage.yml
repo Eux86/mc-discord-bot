@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Npm Build
-      run: npm build
+      run: npm run build
     - name: Test
       run: ls
     - name: Docker Push
