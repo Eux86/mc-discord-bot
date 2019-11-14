@@ -8,9 +8,9 @@ class Rcon {
     tcp: true,       // false for UDP, true for TCP (default true)
     challenge: false  // true to use the challenge protocol (default true)
   };
-  host = '127.0.0.1';
-  port = '8888';
-  pass = 'shomshom';
+  host = process.env.RCON_HOST;
+  port = process.env.RCON_PORT;
+  pass = process.env.RCON_PASS;
 
   sendCommand = (command: string): Promise<string> => {
     const conn = new NodeRcon(this.host, this.port, this.pass, this.options);
