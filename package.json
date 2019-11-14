@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/main.js"
+    "start": "tsc && node dist/main.js",
+    "docker-build": "docker build -t eux86/mc-discord-bot .",
+    "docker-push": "docker push eux86/mc-discord-bot:latest"
   },
   "keywords": [],
   "author": "",
