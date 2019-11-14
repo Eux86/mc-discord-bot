@@ -1,5 +1,5 @@
-import Rcon from './rcon';
-import Discord from './discord';
+import Rcon from './src/rcon';
+import Discord from './src/discord';
 require('dotenv').config();
 
 const rcon = new Rcon();

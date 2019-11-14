@@ -1,6 +1,6 @@
 import Ping from './ping';
 import listPlayers from './list-players';
-import Rcon from '../rcon';
+import Rcon from '../src/rcon';
 
 interface ICommand {
   name: string;
