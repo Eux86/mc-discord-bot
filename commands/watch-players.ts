@@ -1,9 +1,8 @@
 import { ICommand } from ".";
 import Rcon from "../src/rcon";
-import { connect } from "http2";
 
 let watchingPlayers = false;
-const delayInMinutes = 0.1; // delay in minutes between checks
+const delayInMinutes = 2; // delay in minutes between checks
 let connectedPlayers: Array<string> = [];
 
 let interval: NodeJS.Timeout;
