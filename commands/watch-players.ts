@@ -38,6 +38,7 @@ const notificationsOn = (rcon: Rcon, channel: any): void => {
     channel.send(NOTIFICATIONS_ALREADY_ON);
     return;
   }
+  watchingPlayers = true;
   interval = setInterval(() => {
     rcon.sendCommand('list')
       .then((resp: string) => {
@@ -62,6 +63,7 @@ const notificationsOff = (channel: any): void => {
     channel.send(NOTIFICATIONS_ALREADY_OFF);
     return;
   }
+  watchingPlayers = false;
   clearInterval(interval);
 }
 
