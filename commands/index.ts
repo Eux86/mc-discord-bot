@@ -1,6 +1,7 @@
 import Ping from './ping';
 import listPlayers from './list-players';
 import Rcon from '../src/rcon';
+import loggedPlayersNotifications from './watch-players';
 
 interface ICommand {
   name: string;
@@ -9,4 +10,4 @@ interface ICommand {
 }
 
 export { ICommand };
-export default [Ping, listPlayers];
+export default [Ping, listPlayers, loggedPlayersNotifications];

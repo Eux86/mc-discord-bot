@@ -1,8 +1,8 @@
 // import * as Rcon from 'rcon';
 var NodeRcon = require('rcon');
-console.log('Initializing rcon');
 
 class Rcon {
+
 
   options = {
     tcp: true,       // false for UDP, true for TCP (default true)
@@ -12,10 +12,12 @@ class Rcon {
   port = process.env.RCON_PORT;
   pass = process.env.RCON_PASS;
 
+  constructor() {
+    console.log('Initializing rcon');
+  }
   sendCommand = (command: string): Promise<string> => {
-    const conn = new NodeRcon(this.host, this.port, this.pass, this.options);
-
     return new Promise((resolve: any, reject: any) => {
+      const conn = new NodeRcon(this.host, this.port, this.pass, this.options);
       conn.on('auth', function () {
         console.log("Authed!");
         conn.send(command);
@@ -24,8 +26,11 @@ class Rcon {
         resolve(str);
       }).on('end', function () {
         console.log("Socket closed!");
+      }).on('error', function (error: string) {
+        reject(error);
       });
-      conn.connect();
+
+      conn.connect()
     })
   }
 }
