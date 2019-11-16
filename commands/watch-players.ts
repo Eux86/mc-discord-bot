@@ -2,7 +2,7 @@ import { ICommand } from ".";
 import Rcon from "../src/rcon";
 
 let watchingPlayers = false;
-const delayInMinutes = 2; // delay in minutes between checks
+const delayInMinutes: number = Number.parseInt(process.env.PLAYERS_CONNECTED_ALERTS_POLLING_MINUTES_DELAY || '2'); // delay in minutes between checks
 let connectedPlayers: Array<string> = [];
 
 let interval: NodeJS.Timeout;
