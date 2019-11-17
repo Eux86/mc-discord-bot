@@ -20,8 +20,12 @@ const NOTIFICATIONS_STATUS = 'Notifications are ';
 const ERROR_CANT_RETRIVE_PLAYERS_LIST = 'It wasn\'t possible to retrive the players list';
 
 const getPlayersListFromCommandResponse = (commandResponse: string): Array<string> => {
-  const list = commandResponse.split(': ')[1].split(', ');
-  return list;
+  const namesPart = commandResponse.trim().split(': ')[1];
+  if (namesPart && namesPart.length > 0) {
+    return namesPart.split(', ');
+  } else {
+    return [];
+  }
 }
 
 const checkNewPlayers = (updatedPlayersList: Array<string>) => {
@@ -51,8 +55,11 @@ const notificationsOn = (rcon: Rcon, settingsService: ISettingsService, channel:
         if (newPlayers.length > 0) {
           channel.send(`New players connected: ${newPlayers}`);
         }
-        console.log(playersList);
-        console.log(newPlayers);
+        if (connectedPlayers.length > 0 && playersList.length === 0) {
+          channel.send(`All players disconnected from the server`);
+        }
+        // console.log(connectedPlayers);
+        // console.log(newPlayers);
         connectedPlayers = playersList;
       })
       .catch((error: string) => {
