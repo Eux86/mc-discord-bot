@@ -1,5 +1,5 @@
 import { ICommand } from ".";
-import Rcon from "../src/rcon";
+import Rcon from "../rcon";
 
 const listPlayers: ICommand = {
   name: 'list-players',

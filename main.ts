@@ -1,6 +1,8 @@
 import Rcon from './src/rcon';
-import Discord from './src/discord';
+import Bot from './src/bot';
+import { SettingsService, ISettingsService } from './src/settings';
 require('dotenv').config();
 
+const settingsService: ISettingsService = SettingsService.getInstance();
 const rcon = new Rcon();
-new Discord(rcon);
+new Bot(rcon, settingsService);

@@ -1,13 +1,14 @@
 const DiscordClient = require('discord.js');
-import commands, { ICommand } from '../commands';
+import commands, { ICommand } from './commands';
 import Rcon from './rcon';
+import { ISettingsService } from './settings';
 
 
-class Discord {
+class Bot {
 
   readonly commandPrefix = '.';
 
-  constructor(rcon: Rcon) {
+  constructor(rcon: Rcon, settingsService: ISettingsService) {
     const client = new DiscordClient.Client();
     client.commands = new DiscordClient.Collection();
 
@@ -16,9 +17,11 @@ class Discord {
     });
 
     client.on('message', (msg: any) => {
+      // Clean and reads the command
       const args = msg.content.split(/ +/);
       const command = args.shift().toLowerCase();
 
+      // Exception for command .help, it will describe all other commands
       if (command === '.help') {
         const helpText = this.getHelpText(commands);
         msg.channel.send(helpText);
@@ -26,8 +29,9 @@ class Discord {
       }
       if (!client.commands.has(command)) return;
 
+      // Cycles thorugh all the available commands
       try {
-        client.commands.get(command).command(msg, args, rcon);
+        client.commands.get(command).command(msg, args, rcon, settingsService);
       } catch (error) {
         console.error(error);
         msg.reply('there was an error trying to execute that command!');
@@ -50,4 +54,4 @@ class Discord {
   }
 }
 
-export default Discord;
+export default Bot;

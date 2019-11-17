@@ -1,5 +1,6 @@
 import { ICommand } from ".";
-import Rcon from "../src/rcon";
+import Rcon from "../rcon";
+import { ISettingsService, ISettings } from "../settings";
 
 let watchingPlayers = false;
 const delayInMinutes: number = Number.parseInt(process.env.PLAYERS_CONNECTED_ALERTS_POLLING_MINUTES_DELAY || '2'); // delay in minutes between checks
@@ -33,12 +34,15 @@ const checkNewPlayers = (updatedPlayersList: Array<string>) => {
   return newPlayers;
 }
 
-const notificationsOn = (rcon: Rcon, channel: any): void => {
+const notificationsOn = (rcon: Rcon, settingsService: ISettingsService, channel: any): void => {
   if (watchingPlayers) {
     channel.send(NOTIFICATIONS_ALREADY_ON);
     return;
   }
   watchingPlayers = true;
+  settingsService.getSettingsAsync().then((settings: ISettings) => {
+    settingsService.setSettingsAsync({...settings, connectedPlayersNotificationsEnabled: true });
+  });
   interval = setInterval(() => {
     rcon.sendCommand('list')
       .then((resp: string) => {
@@ -58,12 +62,15 @@ const notificationsOn = (rcon: Rcon, channel: any): void => {
   }, delayInMinutes * 60000);
 }
 
-const notificationsOff = (channel: any): void => {
+const notificationsOff = (settingsService: ISettingsService, channel: any): void => {
   if (!watchingPlayers) {
     channel.send(NOTIFICATIONS_ALREADY_OFF);
     return;
   }
   watchingPlayers = false;
+  settingsService.getSettingsAsync().then((settings: ISettings) => {
+    settingsService.setSettingsAsync({...settings, connectedPlayersNotificationsEnabled: false });
+  });
   clearInterval(interval);
 }
 
@@ -75,17 +82,17 @@ const notificationsStatus = (channel: any): void => {
 const loggedPlayersNotifications: ICommand = {
   name: `${COMMAND_NAME}`,
   description: 'if on, alerts when a new player logs in',
-  command: (msg: any, args: any, rcon: Rcon) => {
+  command: (msg: any, args: any, rcon: Rcon, settingsService: ISettingsService) => {
     if (!args || args.length <= 0) {
       msg.reply(USAGE)
     }
     switch (args[0]) {
       case 'on':
-        notificationsOn(rcon, msg.channel);
+        notificationsOn(rcon, settingsService, msg.channel);
         msg.reply(`${NOTIFICATIONS_STATUS} on`);
         break;
       case 'off':
-        notificationsOff(msg.channel);
+        notificationsOff(settingsService, msg.channel);
         msg.reply(`${NOTIFICATIONS_STATUS} off`);
         break;
       case 'status':
