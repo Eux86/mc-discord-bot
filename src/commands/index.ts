@@ -1,7 +1,6 @@
 import Ping from './ping';
 import listPlayers from './list-players';
 import Rcon from '../rcon';
-import playersConnectedNotifications from './players-connected-notifications';
 import { ISettingsService } from '../settings';
 
 interface ICommand {
@@ -11,4 +10,4 @@ interface ICommand {
 }
 
 export { ICommand };
-export default [Ping, listPlayers, playersConnectedNotifications];
+export default [Ping, listPlayers];

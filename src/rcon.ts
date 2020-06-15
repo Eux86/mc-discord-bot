@@ -2,8 +2,6 @@
 var NodeRcon = require('rcon');
 
 class Rcon {
-
-
   options = {
     tcp: true,       // false for UDP, true for TCP (default true)
     challenge: false  // true to use the challenge protocol (default true)

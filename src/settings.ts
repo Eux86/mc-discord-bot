@@ -15,7 +15,6 @@ class DefaultSettings implements ISettings {
 }
 
 export class SettingsService implements ISettingsService {
-
   private readonly SETTINGS_FILE_PATH = './settings.json';
   private static instance: SettingsService;
   private settings: ISettings | undefined = undefined;
